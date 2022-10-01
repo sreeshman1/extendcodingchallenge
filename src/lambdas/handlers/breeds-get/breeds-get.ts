@@ -1,18 +1,15 @@
-import fetch from 'node-fetch'
-import { Response } from '../../constants/types'
+import { ErrorResponse, Response } from '../../constants/types'
+import fetchWithTimeout from '../../helpers/helpers'
 
 interface BreedsResponse extends Response {
   body: string[]
-}
-
-interface ErrorResponse extends Response {
-  message: string
 }
 
 export interface Breeds {
   message: Record<string, string[]>
   status: string
 }
+
 
 export const convertBreedsIntoBreedList = (breeds: Record<string, string[]>): string[] => {
   const result: string[] = []
@@ -32,7 +29,7 @@ export const convertBreedsIntoBreedList = (breeds: Record<string, string[]>): st
 
 export async function handler(): Promise<BreedsResponse | ErrorResponse> {
   try {
-    const res = await fetch('https://dog.ceo/api/breeds/list/all')
+    const res = await fetchWithTimeout('https://dog.ceo/api/breeds/list/all', 5000)
     const payload: Breeds = await res.json()
     const breedList = convertBreedsIntoBreedList(payload.message)
     return {
