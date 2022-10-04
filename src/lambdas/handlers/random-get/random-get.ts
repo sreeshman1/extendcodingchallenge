@@ -19,7 +19,6 @@ export async function handler(): Promise<RandomResponse | ErrorResponse> {
       body: payload,
     }
   } catch (err: unknown) {
-    console.log(err)
     return {
       statusCode: 500,
       message: `Something went wrong ${err}`,

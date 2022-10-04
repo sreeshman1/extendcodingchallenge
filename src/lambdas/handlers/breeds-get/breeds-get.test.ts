@@ -39,11 +39,19 @@ describe('breeds-get handler', () => {
   })
 
   it('handles a timeout on the call to the external api', async () => {
-    mockedFetch.mockReturnValueOnce(new Promise(resolve => setTimeout(() => resolve({
-      json: () => {
-        return mockPayload
-      }
-    }), 6000)))
-    await expect(handler()).resolves.toEqual({ message: 'Something went wrong', statusCode: 500 })
+    mockedFetch.mockReturnValueOnce(
+      new Promise((resolve) =>
+        setTimeout(
+          () =>
+            resolve({
+              json: () => {
+                return mockPayload
+              },
+            }),
+          6000,
+        ),
+      ),
+    )
+    await expect(handler()).resolves.toEqual({ message: 'Request Timed Out', statusCode: 504 })
   })
 })
