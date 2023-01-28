@@ -1,12 +1,8 @@
 import fetch from 'node-fetch'
-import { Response } from './types'
+import { ErrorResponse, Response } from '../../constants/types'
 
 interface RandomResponse extends Response {
   body: RandomDog
-}
-
-interface ErrorResponse extends Response {
-  message: string
 }
 
 interface RandomDog {
@@ -25,7 +21,7 @@ export async function handler(): Promise<RandomResponse | ErrorResponse> {
   } catch (err: unknown) {
     return {
       statusCode: 500,
-      message: 'Something went wrong',
+      message: `Something went wrong ${err}`,
     }
   }
 }
